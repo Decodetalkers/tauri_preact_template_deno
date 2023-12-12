@@ -1,3 +1,12 @@
+# Because I copy from bpevs, so I keey the README
+
+[tauri_deno_mobile_sample](https://github.com/bpevs/tauri_deno_mobile_sample#readme)
+
+I want to make a base tamplate to build desktop tauri app with deno
+
+
+# Down is the awesome origin one
+
 # Tauri Deno Mobile (Android) Sample
 Building on MacOS
 I only made this work with Android so far...
