@@ -6,12 +6,12 @@ if (Deno.args[0] === 'build') {
   await esbuild.build(await createOptions(Deno.args[1]))
   esbuild.stop()
 } else if (Deno.args[0] === 'dev') {
-  const res = await esbuild.context(await createOptions());
-  await res.watch();
-  await res.serve({
+  const ctx = await esbuild.context(await createOptions());
+  await ctx.serve({
     port: 3000,
     servedir: './src-www',
   });
+  await ctx.watch();
 }
 
 async function createOptions(srcPath: string | undefined = undefined) : Promise<esbuild.BuildOptions> {
@@ -30,8 +30,8 @@ async function createOptions(srcPath: string | undefined = undefined) : Promise<
     outfile: srcPath ? srcPath + "dist/main.js" : './src-www/dist/main.js',
     bundle: true,
     format: 'esm',
-    target: ['chrome99', 'safari15'],
     treeShaking: true,
+    logLevel: "verbose",
     jsx: 'automatic',
     jsxImportSource: 'preact',
   }

@@ -44,6 +44,7 @@
     "test:update": "deno test -A -- --update source",
     "check": "deno check ./src-www/index.tsx",
     "build": "deno run -A build.ts",
+    "devpre": "deno run -A build.ts dev",
     "dev": "cargo tauri dev"
   },
   "imports": {

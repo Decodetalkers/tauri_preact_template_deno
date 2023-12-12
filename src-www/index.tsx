@@ -5,12 +5,10 @@ import { signal } from "@preact/signals";
 
 const greetingText = signal("Did not yet greet");
 
-function App() {
-  //useEffect(async () => {
-  //  greetingText.value = await invoke("greet", { name: "Joe" });
-  //}, []);
+//await invoke("greet", { name: "Jone" });
 
-  return <div>{greetingText.value}</div>;
+function App() {
+  return <div>{"ggg"}</div>;
 }
 
 const mountPoint = document.getElementById("root") as HTMLElement;
