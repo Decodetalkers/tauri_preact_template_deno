@@ -1,6 +1,6 @@
 import { h, render } from "preact";
 //import { useEffect } from "preact/hooks";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-api/tauri";
 import { signal } from "@preact/signals";
 
 const greetingText = signal("Did not yet greet");
