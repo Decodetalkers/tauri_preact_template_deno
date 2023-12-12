@@ -13,7 +13,8 @@
   },
   "fmt": {
     "include": [
-      "src-www/"
+      "src-www/",
+      "build.ts"
     ],
     "exclude": [
       "src-www/dist/"
