@@ -23,8 +23,7 @@ if (buildType === "build") {
 function ensureDir(srcPath: string | undefined = undefined) {
   const distDir = srcPath ? srcPath + "dist" : "./src-www/dist";
   const options = { overwrite: true };
-  copySync("./src-www/css", distDir + "/css", options);
-  copySync("./src-www/index.html", distDir + "/index.html", options);
+  copySync("./src-www/static", distDir, options);
 }
 
 async function createOptions(
