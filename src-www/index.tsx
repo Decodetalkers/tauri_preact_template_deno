@@ -1,24 +1,5 @@
 import { h, render } from "preact";
-//import { useEffect } from "preact/hooks";
-//import { invoke } from "@tauri-apps/api";
-//import { signal } from "@preact/signals";
 import Home from "./source/home.tsx";
-//const greetingText = signal("Did not yet greet");
-
-//function App() {
-//  const handleHelloWorld = async () => {
-//    const text: string = await invoke("greet", { name: "Jone" });
-//    greetingText.value = text;
-//  };
-//  return (
-//    <div>
-//      <div>
-//        {greetingText.value}
-//      </div>
-//      <button className="button" onClick={handleHelloWorld}>hello</button>
-//    </div>
-//  );
-//}
 
 const mountPoint = document.getElementById("root") as HTMLElement;
 if (mountPoint) render(<Home />, mountPoint);

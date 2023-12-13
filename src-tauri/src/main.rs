@@ -1,4 +1,15 @@
-use tauri::App;
+use tauri::{App, State};
+
+use std::sync::{Arc, Mutex};
+
+#[derive(Debug, Default)]
+struct MyState(Arc<Mutex<i32>>);
+
+impl MyState {
+    fn change(&self, count: i32) {
+        *self.0.lock().unwrap() += count;
+    }
+}
 
 pub type SetupHook = Box<dyn FnOnce(&mut App) -> Result<(), Box<dyn std::error::Error>> + Send>;
 
@@ -11,6 +22,12 @@ pub struct AppBuilder {
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
+}
+
+#[tauri::command]
+fn change_count(count: i32, state: State<'_, MyState>) -> i32 {
+    state.inner().change(count);
+    *state.inner().0.lock().unwrap()
 }
 
 impl AppBuilder {
@@ -29,7 +46,8 @@ impl AppBuilder {
 
     pub fn run(self) {
         tauri::Builder::default()
-            .invoke_handler(tauri::generate_handler![greet])
+            .manage(MyState::default())
+            .invoke_handler(tauri::generate_handler![greet, change_count])
             .run(tauri::generate_context!())
             .expect("error while running tauri application");
     }
