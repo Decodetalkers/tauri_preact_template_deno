@@ -13,7 +13,18 @@ invoke("greet", { name: "Jone" }).then((res) => {
 });
 
 function App() {
-  return <div>{greetingText.value}</div>;
+  const handleHelloWorld = async () => {
+    const text: string = await invoke("greet", { name: "Jone" });
+    greetingText.value = text;
+  };
+  return (
+    <div>
+      <div>
+        {greetingText.value}
+      </div>
+      <button onClick={handleHelloWorld}>hello</button>
+    </div>
+  );
 }
 
 const mountPoint = document.getElementById("root") as HTMLElement;
