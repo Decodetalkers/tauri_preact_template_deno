@@ -5,13 +5,6 @@ import { signal } from "@preact/signals";
 
 const greetingText = signal("Did not yet greet");
 
-invoke("greet", { name: "Jone" }).then((res) => {
-  console.log(res);
-}).catch((e) => {
-  greetingText.value = e;
-  console.log(e);
-});
-
 function App() {
   const handleHelloWorld = async () => {
     const text: string = await invoke("greet", { name: "Jone" });
