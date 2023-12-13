@@ -3,7 +3,7 @@
     "beforeBuildCommand": "deno run -A build.ts build",
     "beforeDevCommand": "deno run -A build.ts dev",
     "devPath": "http://localhost:3000",
-    "distDir": "../src-www"
+    "distDir": "../src-www/dist"
   },
   "package": {
     "productName": "Tauri Deno Mobile Sample",

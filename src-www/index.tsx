@@ -22,7 +22,7 @@ function App() {
       <div>
         {greetingText.value}
       </div>
-      <button onClick={handleHelloWorld}>hello</button>
+      <button className="button" onClick={handleHelloWorld}>hello</button>
     </div>
   );
 }

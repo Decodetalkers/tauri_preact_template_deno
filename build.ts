@@ -1,17 +1,30 @@
 import { resolve } from "std/path/mod.ts";
 import * as esbuild from "esbuild";
 import { denoPlugins } from "esbuild_deno_loader";
+import { copySync } from "https://deno.land/std@0.201.0/fs/copy.ts";
 
-if (Deno.args[0] === "build") {
-  await esbuild.build(await createOptions(Deno.args[1]));
+const srcPath = Deno.args[1];
+const buildType = Deno.args[0];
+
+if (buildType === "build") {
+  ensureDir(srcPath);
+  await esbuild.build(await createOptions(srcPath));
   esbuild.stop();
-} else if (Deno.args[0] === "dev") {
+} else if (buildType === "dev") {
+  ensureDir();
   const ctx = await esbuild.context(await createOptions());
   await ctx.serve({
     port: 3000,
-    servedir: "./src-www",
+    servedir: "./src-www/dist",
   });
   await ctx.watch();
+}
+
+function ensureDir(srcPath: string | undefined = undefined) {
+  const distDir = srcPath ? srcPath + "dist" : "./src-www/dist";
+  const options = { overwrite: true };
+  copySync("./src-www/css", distDir + "/css", options);
+  copySync("./src-www/index.html", distDir + "/index.html", options);
 }
 
 async function createOptions(
@@ -29,7 +42,7 @@ async function createOptions(
   return {
     plugins: [...denoPlugins({ importMapURL })],
     entryPoints: [srcPath ? srcPath + "index.ts" : "./src-www/index.tsx"],
-    outfile: srcPath ? srcPath + "dist/main.js" : "./src-www/dist/main.js",
+    outdir: srcPath ? srcPath + "dist" : "./src-www/dist/",
     bundle: true,
     format: "esm",
     treeShaking: true,
