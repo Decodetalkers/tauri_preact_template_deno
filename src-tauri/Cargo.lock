@@ -2837,7 +2837,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tauri_deno_mobile_sample"
+name = "tauri_deno_sample"
 version = "0.1.0"
 dependencies = [
  "serde",
