@@ -6,7 +6,7 @@
     "distDir": "../src-www/dist"
   },
   "package": {
-    "productName": "Tauri Deno Mobile Sample",
+    "productName": "Tauri deno css sample",
     "version": "0.1.0"
   },
   "tauri": {
@@ -25,7 +25,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "me.bpev.tauri-mobile-sample-app",
+      "identifier": "me.bpev.tauri-deno-sample-app",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -51,7 +51,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "Tauri Deno Mobile Sample",
+        "title": "Tauri Deno Css Sample",
         "width": 800
       }
     ]
