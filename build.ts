@@ -29,6 +29,19 @@ function ensureDir(srcPath: string | undefined = undefined) {
 async function createOptions(
   srcPath: string | undefined = undefined,
 ): Promise<esbuild.BuildOptions> {
+  const watchplugin: esbuild.Plugin = {
+    name: "watch-plugin",
+    setup(build) {
+      build.onEnd((result) => {
+        if (result.errors.length != 0) {
+          console.error(
+            result.errors,
+          );
+        }
+        ensureDir(srcPath);
+      });
+    },
+  };
   const denoJSONFileURL = new URL("file://" + resolve("./deno.json"));
 
   const denoJSON = await (await fetch(denoJSONFileURL)).json();
@@ -39,7 +52,7 @@ async function createOptions(
   const importMapURL = `data:application/json,${JSON.stringify(importMap)}`;
 
   return {
-    plugins: [...denoPlugins({ importMapURL })],
+    plugins: [...denoPlugins({ importMapURL }), watchplugin],
     entryPoints: [srcPath ? srcPath + "index.ts" : "./src-www/index.tsx"],
     outdir: srcPath ? srcPath + "dist" : "./src-www/dist/",
     bundle: true,

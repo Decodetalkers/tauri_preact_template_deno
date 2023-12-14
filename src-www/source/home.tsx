@@ -2,6 +2,7 @@ import Counter from "../components/Counter.tsx";
 import { useSignal } from "@preact/signals";
 
 import { h } from "preact";
+
 export default function Home() {
   const count = useSignal(0);
   return (
