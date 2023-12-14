@@ -1,13 +1,17 @@
 use tauri::{App, State};
 
-use std::sync::{Arc, Mutex};
+use tauri::async_runtime::Mutex;
+
+use std::sync::Arc;
 
 #[derive(Debug, Default)]
 struct MyState(Arc<Mutex<i32>>);
 
 impl MyState {
-    fn change(&self, count: i32) {
-        *self.0.lock().unwrap() += count;
+    async fn change(&self, count: i32) -> i32 {
+        let mut inner = self.0.lock().await;
+        *inner += count;
+        *inner
     }
 }
 
@@ -25,9 +29,8 @@ fn greet(name: &str) -> String {
 }
 
 #[tauri::command]
-fn change_count(count: i32, state: State<'_, MyState>) -> i32 {
-    state.inner().change(count);
-    *state.inner().0.lock().unwrap()
+async fn change_count(count: i32, state: State<'_, MyState>) -> Result<i32, ()> {
+    Ok(state.inner().change(count).await)
 }
 
 impl AppBuilder {
