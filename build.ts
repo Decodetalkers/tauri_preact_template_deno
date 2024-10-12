@@ -13,13 +13,7 @@ const input_args = parseArgs(Deno.args) as BuildMode;
 
 const release_mode = input_args.release;
 
-let route_path = "debug";
-
-if (release_mode) {
-  route_path = "release";
-}
-
-const fsRoot = `${Deno.cwd()}/dist/debug`;
+const fsRoot = `${Deno.cwd()}/dist/`;
 
 const base_asserts = { path: "static/asserts", alias: "static" };
 const css_asserts = { path: "static/styles" };
@@ -30,7 +24,7 @@ if (!release_mode) {
   scripts.push({ src: "./refresh/client.js" });
 }
 
-const mainroutin = new Route(route_path)
+const mainroutin = new Route()
   .append_assert(base_asserts)
   .append_assert(css_asserts)
   .append_webpage(
@@ -44,7 +38,13 @@ const mainroutin = new Route(route_path)
         { type: "stylesheet", href: "styles/global.css" },
         { type: "icon", href: "static/favicon.ico" },
       ]),
-  );
+  )
+  .then((route) => {
+    if (!release_mode) {
+      route.append_assert({ path: "./static/refresh" });
+    }
+    return route;
+  });
 
 const webgen = new GenWebsite()
   .withLogLevel("info")

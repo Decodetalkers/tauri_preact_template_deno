@@ -53,16 +53,18 @@ if (mount) {
   render(<App />, mount!);
 }
 
-const start_val: number = await invoke("change_count", { count: 0 });
+const start_val: number | undefined = await invoke("change_count", {
+  count: 0,
+});
 
 function App() {
-  const [counter, setCounter] = useState(start_val);
+  const [counter, setCounter] = useState(start_val || 0);
 
   const updateCounter = async (newnum: number) => {
     const new_val: number | undefined = await invoke("change_count", {
       count: newnum,
     });
-    if (new_val) {
+    if (new_val != undefined) {
       setCounter(new_val);
     }
   };
@@ -74,12 +76,12 @@ function App() {
         <MainTitle>Welcome</MainTitle>
         <Counter>
           <CounterBtn
-            onClick={async () => await updateCounter(counter - 1)}
+            onClick={async () => await updateCounter(-1)}
           >
             -1
           </CounterBtn>
           <CounterText>{counter}</CounterText>
-          <CounterBtn onClick={async () => await updateCounter(counter + 1)}>
+          <CounterBtn onClick={async () => await updateCounter(1)}>
             +1
           </CounterBtn>
         </Counter>

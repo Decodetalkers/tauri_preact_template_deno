@@ -2,9 +2,9 @@
 name = "tauri_deno_sample"
 version = "0.1.0"
 description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+authors = ["Decodetalkers"]
+license = "MIT"
+repository = "https://github.com/Decodetalkers/tauri_deno_desktop_train"
 edition = "2021"
 
 [build-dependencies]

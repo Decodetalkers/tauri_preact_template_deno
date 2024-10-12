@@ -1,6 +1,6 @@
 {
   "imports": {
-    "@nobody/tananoni": "jsr:@nobody/tananoni@^0.3.7",
+    "@nobody/tananoni": "jsr:@nobody/tananoni@^0.3.8",
     "@std/async": "jsr:@std/async@^1.0.6",
     "@std/cli": "jsr:@std/cli@^1.0.6",
     "@std/fs": "jsr:@std/fs@^1.0.4",

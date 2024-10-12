@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "identifier": "com.tauri.dev",
   "build": {
-    "frontendDist": "../dist/debug",
+    "frontendDist": "../dist/",
     "devUrl": "http://localhost:8000",
     "beforeDevCommand": "deno run -A build.ts",
     "beforeBuildCommand": "deno run -A build.ts --release"
