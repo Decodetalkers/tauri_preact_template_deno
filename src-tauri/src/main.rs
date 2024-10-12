@@ -51,7 +51,7 @@ impl AppBuilder {
         tauri::Builder::default()
             .manage(MyState::default())
             .invoke_handler(tauri::generate_handler![greet, change_count])
-            .run(tauri::generate_context!())
+            .run(tauri::generate_context!("tauri.conf.json"))
             .expect("error while running tauri application");
     }
 }
