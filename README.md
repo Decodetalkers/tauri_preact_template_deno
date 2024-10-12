@@ -1,9 +1,7 @@
-# static website with deno and esbuild
+# Tauri for deno
 
-* Support hot reload
+## Usage
 
-## Start
-
-```
-deno task start
-```
+### Desktop
+- `tauri run dev`
+- `tauri run build`
