@@ -50,7 +50,7 @@ const CounterText = styled.p`
 const mount = document.getElementById("mount");
 
 if (mount) {
-  render(<App />, mount!);
+  render(<App />, mount);
 }
 
 const start_val: number | undefined = await invoke("change_count", {

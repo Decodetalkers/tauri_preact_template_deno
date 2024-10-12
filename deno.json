@@ -22,6 +22,14 @@
   "lint": {
     "exclude": [
       "dist",
+      "src-tauri",
+      "static"
+    ]
+  },
+  "fmt": {
+    "exclude": [
+      "dist",
+      "src-tauri",
       "static"
     ]
   },
