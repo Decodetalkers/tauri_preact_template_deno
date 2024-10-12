@@ -3,7 +3,7 @@
   "specifiers": {
     "jsr:@luca/esbuild-deno-loader@~0.10.3": "0.10.3",
     "jsr:@nobody/styled-components-deno@~0.8.2": "0.8.2",
-    "jsr:@nobody/tananoni@~0.3.8": "0.3.8",
+    "jsr:@nobody/tananoni@~0.3.12": "0.3.12",
     "jsr:@std/assert@^1.0.6": "1.0.6",
     "jsr:@std/assert@~0.213.1": "0.213.1",
     "jsr:@std/async@^1.0.6": "1.0.6",
@@ -47,11 +47,12 @@
         "npm:react@^18.3.1"
       ]
     },
-    "@nobody/tananoni@0.3.8": {
-      "integrity": "d5346b084f3dc226437f69d2ac109f717d4f858a41fa11d7e1b3a6648bf532be",
+    "@nobody/tananoni@0.3.12": {
+      "integrity": "e6044c1de98be74a0e7c98ed4833cd40ba1f117d2a9720ea51994413b821de49",
       "dependencies": [
         "jsr:@luca/esbuild-deno-loader",
         "jsr:@std/assert@^1.0.6",
+        "jsr:@std/async",
         "jsr:@std/fs@^1.0.4",
         "jsr:@std/path@^1.0.6",
         "npm:esbuild@0.24"
@@ -356,8 +357,7 @@
     "dependencies": [
       "jsr:@luca/esbuild-deno-loader@~0.10.3",
       "jsr:@nobody/styled-components-deno@~0.8.2",
-      "jsr:@nobody/tananoni@~0.3.8",
-      "jsr:@std/async@^1.0.6",
+      "jsr:@nobody/tananoni@~0.3.12",
       "jsr:@std/cli@^1.0.6",
       "jsr:@std/fs@^1.0.4",
       "jsr:@std/http@^1.0.8",

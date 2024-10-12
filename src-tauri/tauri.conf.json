@@ -1,7 +1,7 @@
 {
   "productName": "Hello World",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "deno.tauri.example",
   "build": {
     "frontendDist": "../dist/",
     "devUrl": "http://localhost:8000",

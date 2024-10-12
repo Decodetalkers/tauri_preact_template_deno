@@ -1,8 +1,13 @@
 import { serveDir } from "@std/http";
-import { delay } from "@std/async";
 
 import { parseArgs } from "@std/cli";
-import { GenWebsite, Route, type Script, WebPageUnit } from "@nobody/tananoni";
+import {
+  GenWebsite,
+  refreshMiddleware,
+  Route,
+  watchChanges,
+  WebPageUnit,
+} from "@nobody/tananoni";
 
 interface BuildMode {
   debug?: boolean;
@@ -18,12 +23,6 @@ const fsRoot = `${Deno.cwd()}/dist/`;
 const base_asserts = { path: "static/asserts", alias: "static" };
 const css_asserts = { path: "static/styles" };
 
-const scripts: Script[] = [{ type: "module", src: "main.js" }];
-
-if (!release_mode) {
-  scripts.push({ src: "./refresh/client.js" });
-}
-
 const mainroutin = new Route()
   .append_assert(base_asserts)
   .append_assert(css_asserts)
@@ -31,96 +30,27 @@ const mainroutin = new Route()
     new WebPageUnit(
       "./src-www/main.tsx",
       [{ type: "main", id: "mount" }],
-      scripts,
+      [{ type: "module", src: "main.js" }],
     )
       .with_title("template")
       .with_linkInfos([
         { type: "stylesheet", href: "styles/global.css" },
         { type: "icon", href: "static/favicon.ico" },
-      ]),
+      ])
+      .then((webpage) => {
+        if (!release_mode) {
+          webpage.with_hotReload();
+        }
+        return webpage;
+      }),
   )
-  .then((route) => {
-    if (!release_mode) {
-      route.append_assert({ path: "./static/refresh" });
-    }
-    return route;
-  });
+  .with_hotReload(!release_mode);
 
 const webgen = new GenWebsite()
   .withLogLevel("info")
   .withImportSource("npm:preact");
 
-/**
- * In-memory store of open WebSockets for
- * triggering browser refresh.
- */
-const sockets: Set<WebSocket> = new Set();
-
-/**
- * Upgrade a request connection to a WebSocket if
- * the url ends with "/refresh"
- */
-function refreshMiddleware(req: Request): Response | null {
-  if (req.url.endsWith("/refresh")) {
-    const { response, socket } = Deno.upgradeWebSocket(req);
-
-    // Add the new socket to our in-memory store
-    // of WebSockets.
-    sockets.add(socket);
-
-    // Remove the socket from our in-memory store
-    // when the socket closes.
-    socket.onclose = () => {
-      sockets.delete(socket);
-    };
-
-    return response;
-  }
-
-  return null;
-}
-
 await webgen.generate_website(mainroutin);
-
-async function watch() {
-  let during_wait = false;
-
-  const watcher = Deno.watchFs("./");
-
-  for await (const event of watcher) {
-    if (during_wait) {
-      continue;
-    }
-    if (["any", "access"].includes(event.kind)) {
-      continue;
-    }
-
-    let should_fresh = false;
-
-    for (const pa of event.paths) {
-      if (
-        pa.includes("./dist") || pa.includes("./build.ts") ||
-        (pa.endsWith(".git") || pa.includes(".git/")) ||
-        (!pa.endsWith("ts") && !pa.endsWith("tsx") && !pa.endsWith("css") &&
-          !pa.endsWith("js") && !pa.endsWith("jsx"))
-      ) {
-        continue;
-      }
-      should_fresh = true;
-      break;
-    }
-    if (!should_fresh) {
-      continue;
-    }
-
-    await webgen.generate_website(mainroutin);
-    sockets.forEach((socket) => {
-      socket.send("refresh");
-    });
-    during_wait = true;
-    delay(1000).then(() => during_wait = false);
-  }
-}
 
 if (release_mode) {
   Deno.exit(0);
@@ -136,4 +66,13 @@ Deno.serve({ hostname: "localhost", port: 8000 }, async (req) => {
   return await serveDir(req, { fsRoot });
 });
 
-await watch();
+async function fsWatch() {
+  await webgen.generate_website(mainroutin);
+}
+
+await watchChanges({
+  watchedDir: "./",
+  watchedFileTypes: [".ts", ".tsx", ".css", ".md"],
+  excludes: ["dist", "build.ts", "build.ts~"],
+  fallback: fsWatch,
+});
